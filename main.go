@@ -1,20 +1,18 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
 	"github.com/sebastiankennedy/go-web-skeleton/bootstrap"
+	"github.com/sebastiankennedy/go-web-skeleton/config"
 	"net/http"
 )
 
-var router *mux.Router
-
+// 初始化配置信息
 func init() {
-
+	config.Initialize()
 }
 
-
 func main() {
-	router = bootstrap.SetupRouter()
+	router := bootstrap.SetupRouter()
 
 	err := http.ListenAndServe(":3000", router)
 	if err != nil {
