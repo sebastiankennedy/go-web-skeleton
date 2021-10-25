@@ -1,16 +1,14 @@
 package routes
 
 import (
-	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/sebastiankennedy/go-web-skeleton/pkg/config"
-	"net/http"
+	"github.com/sebastiankennedy/go-web-skeleton/app/http/controllers"
 )
 
-func defaultHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello, "+config.GetString("app.name"))
-}
-
 func RegisterWebRoutes(r *mux.Router) {
-	r.HandleFunc("/", defaultHandler).Methods("GET").Name("home")
+	hc := new(controllers.HomeController)
+	r.HandleFunc("/", hc.Index).Methods("GET").Name("home.index")
+
+	ac := new(controllers.AdminController)
+	r.HandleFunc("/admin", ac.Index).Methods("GET").Name("admin.index")
 }
