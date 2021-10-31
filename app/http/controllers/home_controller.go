@@ -3,11 +3,12 @@ package controllers
 import (
 	"fmt"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/config"
+	"github.com/sebastiankennedy/go-web-skeleton/pkg/mvc"
 	"net/http"
 )
 
 type HomeController struct {
-	HttpController
+	mvc.Controller
 }
 
 func (*HomeController) Index(w http.ResponseWriter, r *http.Request) {

@@ -15,6 +15,7 @@ func SetupRouter() *mux.Router {
 	 */
 	muxRouter := mux.NewRouter()
 	routes.RegisterWebRoutes(muxRouter)
+	routes.RegisterResourceRoutes(muxRouter)
 	router.SetRouter(muxRouter)
 
 	return muxRouter
