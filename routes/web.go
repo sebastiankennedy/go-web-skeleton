@@ -15,6 +15,8 @@ func RegisterWebRoutes(r *mux.Router) {
 }
 
 func RegisterResourceRoutes(r *mux.Router) {
-	r.PathPrefix("/css/").Handler(http.FileServer(http.Dir("./public")))
 	r.PathPrefix("/js/").Handler(http.FileServer(http.Dir("./public")))
+	r.PathPrefix("/css/").Handler(http.FileServer(http.Dir("./public")))
+	r.PathPrefix("/img/").Handler(http.FileServer(http.Dir("./public")))
+	r.PathPrefix("/webfonts/").Handler(http.FileServer(http.Dir("./public")))
 }
