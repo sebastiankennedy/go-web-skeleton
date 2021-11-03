@@ -1,4 +1,4 @@
-package mvc
+package view
 
 import (
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/logger"

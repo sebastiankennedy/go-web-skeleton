@@ -1,4 +1,4 @@
-package mvc
+package model
 
 type Model struct {
 }
