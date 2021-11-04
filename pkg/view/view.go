@@ -1,6 +1,7 @@
 package view
 
 import (
+	"github.com/sebastiankennedy/go-web-skeleton/pkg/config"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/logger"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/router"
 	"html/template"
@@ -24,6 +25,7 @@ func RenderTemplate(w io.Writer, name string, data Data, tplFiles ...string) {
 	// 解析模板文件
 	tmpl, err := template.New("").Funcs(template.FuncMap{
 		"RouteNameToUrl": router.NameToUrl,
+		"Env":            config.Env,
 	}).ParseFiles(allFiles...)
 	logger.Error(err)
 

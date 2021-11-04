@@ -5,7 +5,7 @@ import "github.com/sebastiankennedy/go-web-skeleton/pkg/config"
 func init() {
 	config.Add("app", config.StrMap{
 		// 应用名称，暂时没有使用到
-		"name": config.Env("APP_NAME", "go-web-skeleton"),
+		"name": config.Env("APP_NAME", "Go Web Skeleton"),
 
 		// 当前环境，用以区分多环境
 		"env": config.Env("APP_ENV", "local"),
@@ -21,5 +21,8 @@ func init() {
 
 		// 用以生成站点链接
 		"url": config.Env("APP_URL", "http://localhost:3000"),
+
+		// 项目版本号
+		"version": config.Env("APP_VERSION", "0.0.1"),
 	})
 }
