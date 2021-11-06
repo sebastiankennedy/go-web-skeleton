@@ -7,11 +7,15 @@ import (
 )
 
 func RegisterWebRoutes(r *mux.Router) {
-	hc := new(controllers.HomeController)
-	r.HandleFunc("/", hc.Index).Methods("GET").Name("home.index")
+	hone := new(controllers.HomeController)
+	r.HandleFunc("/", hone.Index).Methods("GET").Name("home.index")
 
-	ac := new(controllers.AdminController)
-	r.HandleFunc("/admin", ac.Index).Methods("GET").Name("admin.index")
+	admin := new(controllers.AdminController)
+	r.HandleFunc("/admin", admin.Index).Methods("GET").Name("admin.index")
+
+	auth := new(controllers.AuthController)
+	r.HandleFunc("/auth/login", auth.Login).Methods("GET").Name("auth.login")
+	r.HandleFunc("/auth/register", auth.Register).Methods("GET").Name("auth.register")
 }
 
 func RegisterResourceRoutes(r *mux.Router) {

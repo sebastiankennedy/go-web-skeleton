@@ -12,11 +12,36 @@ import (
 
 type Data map[string]interface{}
 
-func RenderAdmin(w io.Writer, data Data, tplFiles ...string) {
-	RenderTemplate(w, "app", data, tplFiles...)
+func RenderSingle(w io.Writer, data Data, tplFile string) {
+	var err error
+
+	// 读取单一视图文件
+	file := getSingleFile(tplFile)
+
+	tmpl, err := template.ParseFiles(file)
+	if err != nil {
+		logger.Error(err)
+	}
+
+	err = tmpl.Execute(w, data)
+	if err != nil {
+		logger.Error(err)
+	}
 }
 
-func RenderTemplate(w io.Writer, name string, data Data, tplFiles ...string) {
+func getSingleFile(tplFile string) string {
+	// 设置视图相对路径
+	viewDir := "resources/views/"
+
+	// 返回视图完整路径
+	return viewDir + strings.Replace(tplFile, ".", "/", -1) + ".gohtml"
+}
+
+func RenderAdmin(w io.Writer, data Data, tplFiles ...string) {
+	RenderAdminTemplate(w, "app", data, tplFiles...)
+}
+
+func RenderAdminTemplate(w io.Writer, name string, data Data, tplFiles ...string) {
 	var err error
 
 	// 生成模板文件
