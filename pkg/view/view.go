@@ -17,7 +17,6 @@ func RenderSingle(w io.Writer, data Data, tplFile string) {
 
 	// 读取单一视图文件
 	file := getSingleFile(tplFile)
-
 	tmpl, err := template.ParseFiles(file)
 	if err != nil {
 		logger.Error(err)
@@ -59,6 +58,10 @@ func RenderAdminTemplate(w io.Writer, name string, data Data, tplFiles ...string
 	if err != nil {
 		return
 	}
+}
+
+func getHomeTemplateFiles(tplFiles ...string) []string {
+	return getTemplateFiles("home", tplFiles...)
 }
 
 func getAdminTemplateFiles(tplFiles ...string) []string {
