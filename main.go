@@ -12,6 +12,10 @@ func init() {
 }
 
 func main() {
+	// 初始化数据库
+	bootstrap.SetupDataBase()
+
+	// 初始化路由
 	router := bootstrap.SetupRouter()
 
 	err := http.ListenAndServe(":3000", router)
