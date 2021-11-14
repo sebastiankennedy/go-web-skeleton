@@ -55,7 +55,8 @@ func (*AuthController) RegisterOperation(w http.ResponseWriter, r *http.Request)
 		}
 
 		if _user.ID > 0 {
-			http.Redirect(w, r, "/", http.StatusFound)
+			// 跳转至首页
+			http.Redirect(w, r, "/admin", http.StatusFound)
 		} else {
 			w.WriteHeader(http.StatusInternalServerError)
 			fmt.Fprint(w, "注册失败，请联系管理员")

@@ -10,10 +10,10 @@ func ValidateRegistrationForm(data user.User) map[string][]string {
 
 	// 1. 定制认证规则
 	rules := govalidator.MapData{
-		"email":            []string{"required", "min:4", "max:30", "email"},
-		"username":         []string{"required", "alpha_num", "between:3,20"},
-		"password":         []string{"required", "min:6"},
-		"password_confirm": []string{"required"},
+		"email":                 []string{"required", "min:4", "max:30", "email", "not_exists:users,email"},
+		"username":              []string{"required", "alpha_num", "between:3,20", "not_exists:users,username"},
+		"password":              []string{"required", "min:6"},
+		"password_confirmation": []string{"required"},
 	}
 
 	// 2. 定制错误消息
@@ -33,7 +33,7 @@ func ValidateRegistrationForm(data user.User) map[string][]string {
 			"required:密码为必填项",
 			"min:长度需大于 6",
 		},
-		"password_confirm": []string{
+		"password_confirmation": []string{
 			"required:确认密码框为必填项",
 		},
 	}
@@ -49,9 +49,9 @@ func ValidateRegistrationForm(data user.User) map[string][]string {
 	// 4. 开始验证
 	errs := govalidator.New(opts).ValidateStruct()
 
-	// 5. 因 govalidator 不支持 password_confirm 验证，我们自己写一个
-	if data.Password != data.PasswordConfirm {
-		errs["password_confirm"] = append(errs["password_confirm"], "两次输入密码不匹配！")
+	// 5. 因 govalidator 不支持 password_confirmation 验证，我们自己写一个
+	if data.Password != data.PasswordConfirmation {
+		errs["password_confirmation"] = append(errs["password_confirmation"], "两次输入密码不匹配！")
 	}
 
 	return errs
