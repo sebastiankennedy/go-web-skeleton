@@ -16,6 +16,8 @@ func RegisterWebRoutes(r *mux.Router) {
 	auth := new(controllers.AuthController)
 	r.HandleFunc("/auth/login", auth.Login).Methods("GET").Name("auth.login")
 	r.HandleFunc("/auth/register", auth.Register).Methods("GET").Name("auth.register")
+	r.HandleFunc("/admin/auth/register", auth.RegisterView).Methods("GET").Name("admin.auth.register_view")
+	r.HandleFunc("/admin/auth/register", auth.RegisterOperation).Methods("POST").Name("admin.auth.register_operation")
 }
 
 func RegisterResourceRoutes(r *mux.Router) {

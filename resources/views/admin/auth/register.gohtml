@@ -20,11 +20,19 @@
             <p class="login-box-msg">Register a new membership</p>
 
             <form action="{{ .RegisterOperationUrl }}" method="post">
-                <label class="col-form-label" for="inputError" style="color: orangered"><i class="far fa-times-circle"></i> Input with
-                    error</label>
-                <div class="input-group mb-3">
 
-                    <input type="email" class="form-control is-invalid" placeholder="Email" name="email">
+                {{ with .Errors.email}}
+                    <label class="col-form-label" for="inputError" style="color: orangered">
+                        {{ range $message := . }}
+                            <p>
+                                <i class="far fa-times-circle"></i>{{ $message }}
+                            </p>
+                        {{ end }}
+                    </label>
+                {{ end }}
+                <div class="input-group mb-3">
+                    <input type="email" class="form-control {{ if .Errors.email }}is-invalid {{ end }}"
+                           placeholder="Email" name="email" value="{{ .User.Email}}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -32,31 +40,67 @@
                     </div>
                 </div>
 
+                {{ with .Errors.username}}
+                    <label class="col-form-label" for="inputError" style="color: orangered">
+                        {{ range $message := . }}
+                            <p>
+                                <i class="far fa-times-circle"></i>{{ $message }}
+                            </p>
+                        {{ end }}
+                    </label>
+                {{ end }}
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Username" name="username">
+                    <input type="text" class="form-control {{ if .Errors.username }}is-invalid {{ end }}"
+                           placeholder="Username" name="username" value="{{ .User.Username}}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-user"> </span>
                         </div>
                     </div>
                 </div>
+
+                {{ with .Errors.password}}
+                    <label class="col-form-label" for="inputError" style="color: orangered">
+                        {{ range $message := . }}
+                            <p>
+                                <i class="far fa-times-circle"></i>{{ $message }}
+                            </p>
+                        {{ end }}
+                    </label>
+                {{ end }}
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Password" name="password">
+                    <input type="password" class="form-control {{ if .Errors.password }}is-invalid {{ end }}"
+                           placeholder="Password" name="password" value="{{ .User.Password}}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
                         </div>
                     </div>
                 </div>
+
+                {{ with .Errors.password_confirmation}}
+                    <label class="col-form-label" for="inputError" style="color: orangered">
+                        {{ range $message := . }}
+                            <p>
+                                <i class="far fa-times-circle"></i>{{ $message }}
+                            </p>
+                        {{ end }}
+                    </label>
+                {{ end }}
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Retype password"
-                           name="password_confirmation">
+                    <input type="password"
+                           class="form-control {{ if .Errors.password_confirmation }}is-invalid {{ end }}"
+                           placeholder="Retype password"
+                           name="password_confirmation"
+                           value="{{ .User.PasswordConfirmation}}"
+                    >
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-8">
                         <div class="icheck-primary">
@@ -72,6 +116,7 @@
                     </div>
                     <!-- /.col -->
                 </div>
+
             </form>
             <a href="{{ .LoginViewUrl }}" class="text-center">I already have a membership</a>
         </div>
