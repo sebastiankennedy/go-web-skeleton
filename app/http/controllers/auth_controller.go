@@ -15,7 +15,12 @@ type AuthController struct {
 }
 
 func (*AuthController) LoginView(w http.ResponseWriter, r *http.Request) {
-	view.RenderSingle(w, nil, "admin.auth.login")
+	data := view.Data{
+		"RegisterViewUrl":   router.NameToUrl("admin.auth.register_view"),
+		"LoginOperationUrl": router.NameToUrl("admin.auth.login_operation"),
+	}
+
+	view.RenderSingle(w, data, "admin.auth.login")
 }
 
 func (*AuthController) LoginOperation(w http.ResponseWriter, r *http.Request) {
