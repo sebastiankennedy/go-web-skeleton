@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/sebastiankennedy/go-web-skeleton/app/http/requests"
 	"github.com/sebastiankennedy/go-web-skeleton/app/models/user"
+	"github.com/sebastiankennedy/go-web-skeleton/pkg/config"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/controller"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/router"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/view"
@@ -31,6 +32,7 @@ func (*AuthController) RegisterView(w http.ResponseWriter, r *http.Request) {
 	data := view.Data{
 		"LoginViewUrl":         router.NameToUrl("admin.auth.login_view"),
 		"RegisterOperationUrl": router.NameToUrl("admin.auth.register_operation"),
+		"AppName":              config.Env("APP_NAME"),
 	}
 
 	view.RenderSingle(w, data, "admin.auth.register")
@@ -50,8 +52,9 @@ func (*AuthController) RegisterOperation(w http.ResponseWriter, r *http.Request)
 	if len(errs) > 0 {
 		// 表单验证失败，重新显示表单
 		view.RenderSingle(w, view.Data{
-			"Errors": errs,
-			"User":   _user,
+			"Errors":  errs,
+			"User":    _user,
+			"AppName": config.Env("APP_NAME"),
 		}, "admin.auth.register")
 	} else {
 		err := _user.Create()
