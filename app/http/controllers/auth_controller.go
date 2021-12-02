@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/sebastiankennedy/go-web-skeleton/app/http/requests"
 	"github.com/sebastiankennedy/go-web-skeleton/app/models/user"
+	"github.com/sebastiankennedy/go-web-skeleton/pkg/auth"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/config"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/controller"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/router"
@@ -25,7 +26,21 @@ func (*AuthController) LoginView(w http.ResponseWriter, r *http.Request) {
 }
 
 func (*AuthController) LoginOperation(w http.ResponseWriter, r *http.Request) {
+	// 获取数据
+	email := r.PostFormValue("email")
+	password := r.PostFormValue("password")
 
+	if err := auth.Attempt(email, password); err == nil {
+		// 登录成功
+		http.Redirect(w, r, "/admin", http.StatusFound)
+	} else {
+		data := view.Data{
+			"Error":    err.Error(),
+			"Email":    email,
+			"Password": password,
+		}
+		view.RenderSingle(w, data, "admin.auth.login")
+	}
 }
 
 func (*AuthController) RegisterView(w http.ResponseWriter, r *http.Request) {
