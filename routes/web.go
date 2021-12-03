@@ -21,6 +21,8 @@ func RegisterWebRoutes(r *mux.Router) {
 	r.HandleFunc("/admin/auth/register", auth.RegisterView).Methods("GET").Name("admin.auth.register_view")
 	r.HandleFunc("/admin/auth/register", auth.RegisterOperation).Methods("POST").Name("admin.auth.register_operation")
 
+	r.HandleFunc("/admin/auth/logout", auth.LogoutOperation).Methods("POST").Name("admin.auth.logout_operation")
+
 	r.Use(middlewares.StartSession)
 }
 

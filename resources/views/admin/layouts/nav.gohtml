@@ -138,6 +138,13 @@
                 <i class="fas fa-th-large"></i>
             </a>
         </li>
+        <li class="nav-item">
+            <form action="{{ RouteNameToUrl "admin.auth.logout_operation"}}" method="post">
+                <button style="border: 0;background: #fff;" class="nav-link" data-widget="control-sidebar" data-slide="true" role="button">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </form>
+        </li>
     </ul>
 </nav>
 <!-- /.navbar -->

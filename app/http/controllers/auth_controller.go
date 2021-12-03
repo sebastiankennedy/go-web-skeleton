@@ -89,3 +89,8 @@ func (*AuthController) RegisterOperation(w http.ResponseWriter, r *http.Request)
 
 	// 验证失败,重新显示表单
 }
+
+func (*AuthController) LogoutOperation(w http.ResponseWriter, r *http.Request) {
+	auth.Logout()
+	http.Redirect(w, r, "/admin/auth/login", http.StatusFound)
+}
