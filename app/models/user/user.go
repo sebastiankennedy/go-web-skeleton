@@ -2,6 +2,7 @@ package user
 
 import (
 	"github.com/sebastiankennedy/go-web-skeleton/app/models"
+	"github.com/sebastiankennedy/go-web-skeleton/pkg/password"
 )
 
 type User struct {
@@ -16,6 +17,6 @@ type User struct {
 }
 
 // ComparePassword 对比密码是否匹配
-func (user *User) ComparePassword(password string) bool {
-    return user.Password == password
+func (user *User) ComparePassword(_password string) bool {
+	return password.CheckHash(_password, user.Password)
 }

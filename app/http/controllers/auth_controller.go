@@ -35,9 +35,11 @@ func (*AuthController) LoginOperation(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/admin", http.StatusFound)
 	} else {
 		data := view.Data{
-			"Error":    err.Error(),
-			"Email":    email,
-			"Password": password,
+			"Error":             err.Error(),
+			"Email":             email,
+			"Password":          password,
+			"RegisterViewUrl":   router.NameToUrl("admin.auth.register_view"),
+			"LoginOperationUrl": router.NameToUrl("admin.auth.login_operation"),
 		}
 		view.RenderSingle(w, data, "admin.auth.login")
 	}
@@ -67,9 +69,10 @@ func (*AuthController) RegisterOperation(w http.ResponseWriter, r *http.Request)
 	if len(errs) > 0 {
 		// 表单验证失败，重新显示表单
 		view.RenderSingle(w, view.Data{
-			"Errors":  errs,
-			"User":    _user,
-			"AppName": config.Env("APP_NAME"),
+			"Errors":       errs,
+			"User":         _user,
+			"AppName":      config.Env("APP_NAME"),
+			"LoginViewUrl": router.NameToUrl("admin.auth.login_view"),
 		}, "admin.auth.register")
 	} else {
 		err := _user.Create()
