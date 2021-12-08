@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/sebastiankennedy/go-web-skeleton/app/http/requests"
 	"github.com/sebastiankennedy/go-web-skeleton/app/models/user"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/auth"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/config"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/controller"
+	"github.com/sebastiankennedy/go-web-skeleton/pkg/flash"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/router"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/view"
 	"net/http"
@@ -32,6 +32,7 @@ func (*AuthController) LoginOperation(w http.ResponseWriter, r *http.Request) {
 
 	if err := auth.Attempt(email, password); err == nil {
 		// 登录成功
+		flash.Success("欢迎回来")
 		http.Redirect(w, r, "/admin", http.StatusFound)
 	} else {
 		data := view.Data{
@@ -41,6 +42,7 @@ func (*AuthController) LoginOperation(w http.ResponseWriter, r *http.Request) {
 			"RegisterViewUrl":   router.NameToUrl("admin.auth.register_view"),
 			"LoginOperationUrl": router.NameToUrl("admin.auth.login_operation"),
 		}
+		flash.Danger(err.Error())
 		view.RenderSingle(w, data, "admin.auth.login")
 	}
 }
@@ -81,19 +83,20 @@ func (*AuthController) RegisterOperation(w http.ResponseWriter, r *http.Request)
 		}
 
 		if _user.ID > 0 {
-			// 跳转至首页
+			// 登录用户并跳转到首页
+			auth.Login(_user)
+			flash.Success("注册成功")
 			http.Redirect(w, r, "/admin", http.StatusFound)
 		} else {
-			w.WriteHeader(http.StatusInternalServerError)
-			fmt.Fprint(w, "注册失败，请联系管理员")
+			// 验证失败,重新显示表单
+			flash.Danger("注册失败")
+			http.Redirect(w, r, "/admin/auth/register", http.StatusFound)
 		}
-
 	}
-
-	// 验证失败,重新显示表单
 }
 
 func (*AuthController) LogoutOperation(w http.ResponseWriter, r *http.Request) {
 	auth.Logout()
+	flash.Info("您已退出登录")
 	http.Redirect(w, r, "/admin/auth/login", http.StatusFound)
 }

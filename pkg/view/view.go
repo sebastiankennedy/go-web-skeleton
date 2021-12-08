@@ -43,6 +43,11 @@ func RenderAdmin(w io.Writer, data Data, tplFiles ...string) {
 func RenderAdminTemplate(w io.Writer, name string, data Data, tplFiles ...string) {
 	var err error
 
+	// 模板通用数据
+	/*data["isLogined"] = auth.Check()
+	data["loginUser"] = auth.User()
+	data["flash"] = flash.All()*/
+
 	// 生成模板文件
 	allFiles := getAdminTemplateFiles(tplFiles...)
 
