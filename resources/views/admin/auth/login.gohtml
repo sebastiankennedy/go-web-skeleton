@@ -22,6 +22,7 @@
             <p class="login-box-msg">Sign in to start your session</p>
 
             <form action="{{ .LoginOperationUrl }}" method="post">
+
                 {{ with .Errors.email}}
                     <label class="col-form-label" for="inputError" style="color: orangered">
                         {{ range $message := . }}
@@ -32,7 +33,8 @@
                     </label>
                 {{ end }}
                 <div class="input-group mb-3">
-                    <input type="email"  class="form-control {{ if .Errors.email }}is-invalid {{ end }}" name="email" placeholder="Email" value="{{ .Email }}">
+                    <input type="email" class="form-control {{ if .Errors.email }}is-invalid {{ end }}" name="email"
+                           placeholder="Email" value="{{ .Email }}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -50,7 +52,8 @@
                     </label>
                 {{ end }}
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control {{ if .Errors.password }}is-invalid {{ end }}" name="password" placeholder="Password">
+                    <input type="password" class="form-control {{ if .Errors.password }}is-invalid {{ end }}"
+                           name="password" placeholder="Password">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>

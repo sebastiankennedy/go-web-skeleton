@@ -16,7 +16,7 @@ func (user *User) Create() (err error) {
 	}
 }
 
-func Get(str string) (User, error)  {
+func Get(str string) (User, error) {
 	var user User
 	id := types.StringToInt(str)
 	if err := model.DB.First(&user, id).Error; err != nil {
