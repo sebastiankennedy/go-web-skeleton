@@ -1,7 +1,9 @@
 package view
 
 import (
+	"github.com/sebastiankennedy/go-web-skeleton/pkg/auth"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/config"
+	"github.com/sebastiankennedy/go-web-skeleton/pkg/flash"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/logger"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/router"
 	"html/template"
@@ -42,11 +44,11 @@ func RenderAdmin(w io.Writer, data Data, tplFiles ...string) {
 
 func RenderAdminTemplate(w io.Writer, name string, data Data, tplFiles ...string) {
 	var err error
-
-	// 模板通用数据
-	/*data["isLogined"] = auth.Check()
-	data["loginUser"] = auth.User()
-	data["flash"] = flash.All()*/
+	
+	// 通用模板数据
+	data["isLogined"] = auth.Check()
+	data["loginUser"] = auth.User
+	data["flash"] = flash.All()
 
 	// 生成模板文件
 	allFiles := getAdminTemplateFiles(tplFiles...)
@@ -61,7 +63,7 @@ func RenderAdminTemplate(w io.Writer, name string, data Data, tplFiles ...string
 	// 渲染模板
 	err = tmpl.ExecuteTemplate(w, name, data)
 	if err != nil {
-		return
+		logger.Error(err)
 	}
 }
 

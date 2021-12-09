@@ -11,5 +11,5 @@ type AdminController struct {
 }
 
 func (*AdminController) Index(w http.ResponseWriter, r *http.Request) {
-	view.RenderAdmin(w, nil, "dashboard.index")
+	view.RenderAdmin(w, view.Data{}, "dashboard.index")
 }
