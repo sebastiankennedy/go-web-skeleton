@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/sebastiankennedy/go-web-skeleton/app/http/requests"
 	"github.com/sebastiankennedy/go-web-skeleton/app/models/user"
 	"github.com/sebastiankennedy/go-web-skeleton/pkg/auth"
@@ -16,7 +17,7 @@ type AuthController struct {
 	controller.Controller
 }
 
-func (*AuthController) LoginView(w http.ResponseWriter, r *http.Request) {
+func (*AuthController) LoginView(w http.ResponseWriter, _ *http.Request) {
 	data := view.Data{
 		"RegisterViewUrl":   router.NameToUrl("admin.auth.register_view"),
 		"LoginOperationUrl": router.NameToUrl("admin.auth.login_operation"),
@@ -26,28 +27,49 @@ func (*AuthController) LoginView(w http.ResponseWriter, r *http.Request) {
 }
 
 func (*AuthController) LoginOperation(w http.ResponseWriter, r *http.Request) {
+	_user := user.User{
+		Email:    r.PostFormValue("email"),
+		Password: r.PostFormValue("password"),
+	}
+
 	// 获取数据
 	email := r.PostFormValue("email")
 	password := r.PostFormValue("password")
-
-	if err := auth.Attempt(email, password); err == nil {
-		// 登录成功
-		flash.Success("欢迎回来")
-		http.Redirect(w, r, "/admin", http.StatusFound)
-	} else {
-		data := view.Data{
-			"Error":             err.Error(),
+	errs := requests.ValidateLoginForm(_user)
+	fmt.Println(errs)
+	if len(errs) > 0 {
+		// 表单验证失败，重新显示表单
+		view.RenderSingle(w, view.Data{
+			"Errors":            errs,
 			"Email":             email,
 			"Password":          password,
 			"RegisterViewUrl":   router.NameToUrl("admin.auth.register_view"),
 			"LoginOperationUrl": router.NameToUrl("admin.auth.login_operation"),
+		}, "admin.auth.login")
+	} else {
+		if err := auth.Attempt(email, password); err == nil {
+			// 登录成功
+			flash.Success("欢迎回来")
+			http.Redirect(w, r, "/admin", http.StatusFound)
+		} else {
+			errs = map[string][]string{
+				"email": {err.Error()},
+			}
+			fmt.Println(errs)
+			data := view.Data{
+				"Errors":            errs,
+				"Email":             email,
+				"Password":          password,
+				"RegisterViewUrl":   router.NameToUrl("admin.auth.register_view"),
+				"LoginOperationUrl": router.NameToUrl("admin.auth.login_operation"),
+			}
+			view.RenderSingle(w, data, "admin.auth.login")
 		}
-		flash.Danger(err.Error())
-		view.RenderSingle(w, data, "admin.auth.login")
 	}
+
 }
 
-func (*AuthController) RegisterView(w http.ResponseWriter, r *http.Request) {
+func (*AuthController) RegisterView(w http.ResponseWriter, _ *http.Request) {
 	data := view.Data{
 		"LoginViewUrl":         router.NameToUrl("admin.auth.login_view"),
 		"RegisterOperationUrl": router.NameToUrl("admin.auth.register_operation"),
