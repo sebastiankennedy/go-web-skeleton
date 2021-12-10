@@ -12,7 +12,7 @@ func RegisterWebRoutes(r *mux.Router) {
 	r.HandleFunc("/", hone.Index).Methods("GET").Name("home.index")
 
 	admin := new(controllers.AdminController)
-	r.HandleFunc("/admin", admin.Index).Methods("GET").Name("admin.index")
+	r.HandleFunc("/admin", middlewares.Auth(admin.Index)).Methods("GET").Name("admin.index")
 
 	auth := new(controllers.AuthController)
 	r.HandleFunc("/admin/auth/login", middlewares.Guest(auth.LoginView)).Methods("GET").Name("admin.auth.login_view")
