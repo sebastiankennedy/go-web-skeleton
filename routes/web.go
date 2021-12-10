@@ -15,13 +15,13 @@ func RegisterWebRoutes(r *mux.Router) {
 	r.HandleFunc("/admin", admin.Index).Methods("GET").Name("admin.index")
 
 	auth := new(controllers.AuthController)
-	r.HandleFunc("/admin/auth/login", auth.LoginView).Methods("GET").Name("admin.auth.login_view")
-	r.HandleFunc("/admin/auth/login", auth.LoginOperation).Methods("POST").Name("admin.auth.login_operation")
+	r.HandleFunc("/admin/auth/login", middlewares.Guest(auth.LoginView)).Methods("GET").Name("admin.auth.login_view")
+	r.HandleFunc("/admin/auth/login", middlewares.Guest(auth.LoginOperation)).Methods("POST").Name("admin.auth.login_operation")
 
-	r.HandleFunc("/admin/auth/register", auth.RegisterView).Methods("GET").Name("admin.auth.register_view")
-	r.HandleFunc("/admin/auth/register", auth.RegisterOperation).Methods("POST").Name("admin.auth.register_operation")
+	r.HandleFunc("/admin/auth/register", middlewares.Guest(auth.RegisterView)).Methods("GET").Name("admin.auth.register_view")
+	r.HandleFunc("/admin/auth/register", middlewares.Guest(auth.RegisterOperation)).Methods("POST").Name("admin.auth.register_operation")
 
-	r.HandleFunc("/admin/auth/logout", auth.LogoutOperation).Methods("POST").Name("admin.auth.logout_operation")
+	r.HandleFunc("/admin/auth/logout", middlewares.Auth(auth.LogoutOperation)).Methods("POST").Name("admin.auth.logout_operation")
 
 	r.Use(middlewares.StartSession)
 }
