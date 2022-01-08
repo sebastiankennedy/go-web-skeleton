@@ -44,10 +44,10 @@ func RenderAdmin(w io.Writer, data Data, tplFiles ...string) {
 
 func RenderAdminTemplate(w io.Writer, name string, data Data, tplFiles ...string) {
 	var err error
-	
+
 	// 通用模板数据
 	data["isLogined"] = auth.Check()
-	data["loginUser"] = auth.User
+	data["loginUser"] = auth.User()
 	data["flash"] = flash.All()
 
 	// 生成模板文件
